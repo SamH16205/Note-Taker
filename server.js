@@ -1,7 +1,6 @@
-const exp = require('constants')
 const express = require('express')
 const path = require('path')
-const db = require('../db/db.json')
+const db = require('./db/db.json')
 const fs = require('fs')
 
 const app = express()
@@ -12,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'))
 
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'notes.html')));
+app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, './public/notes.html')));
 
 app.get('/api/notes', (req, res) => res.json(db));
 
@@ -28,7 +27,7 @@ app.post('/api/notes', (req, res) => {
             id: Math.floor(Math.random() * 1000000)
         }
 
-        fs.readFile('../db/db.json', 'utf8', (err, data) => {
+        fs.readFile('./db/db.json', 'utf8', (err, data) => {
             if (err) {
               console.error(err);
             } else {
@@ -37,7 +36,7 @@ app.post('/api/notes', (req, res) => {
               // Add a new review
               parsedText.push(newNote);
 
-              fs.writeFile("../db/db.json", JSON.stringify(parsedText, null, 4), (err) =>
+              fs.writeFile("./db/db.json", JSON.stringify(parsedText, null, 4), (err) =>
         err
       ? console.error(err)
       : console.log(`Note written to database`)
@@ -58,7 +57,7 @@ app.post('/api/notes', (req, res) => {
 }
   });
 
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, './public/index.html')));
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)

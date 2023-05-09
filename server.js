@@ -19,15 +19,16 @@ app.post('/api/notes', (req, res) => {
     // Let the client know that their POST request was received
     console.info(`${req.method} request received`);
     console.info(req.body)
-    const note_text = req.body["note_text"];
+    const {title, text} = req.body;
 
-    if (note_text){
+    if (text && title){
         const newNote = {
-            note_text,
+            title,
+            text,
             id: Math.floor(Math.random() * 1000000)
         }
 
-        fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        fs.readFile("./db/db.json", 'utf8', (err, data) => {
             if (err) {
               console.error(err);
             } else {
